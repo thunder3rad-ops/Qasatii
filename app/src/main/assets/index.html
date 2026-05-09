@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0f1a45">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Qasati">
+<meta name="description" content="قاصتي - ادخار ذكي لمستقبل أطفالك">
+<title>Qasati | قاصتي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+  :root {
+    --navy:       #1a2a6c;
+    --navy-dark:  #0f1a45;
+    --navy-light: #2a3f8f;
+    --navy-muted: rgba(26,42,108,0.08);
+    --gold:       #c9a84c;
+    --gold-light: #f0d080;
+    --gold-pale:  #fdf3d7;
+    --gold-dark:  #8a6820;
+    --bg:         #f5f6fc;
+    --white:      #ffffff;
+    --border:     rgba(26,42,108,0.10);
+    --text:       #1a2a6c;
+    --text-muted: #888;
+    --green:      #1a7a4a;
+    --red:        #b05a1a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--navy-dark);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+  }
+
+  /* ── Phone Shell ── */
+  .phone {
+    width: 375px;
+    max-width: 100vw;
+    background: var(--bg);
+    border-radius: 44px;
+    border: 3px solid #2a3f8f;
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,168,76,0.2) inset;
+    position: relative;
+  }
+
+  @media (max-width: 420px) {
+    body { padding: 0; align-items: flex-start; }
+    .phone { border-radius: 0; border: none; width: 100vw; min-height: 100vh; }
+  }
+
+  /* ── Screens ── */
+  .screen { background: var(--bg); min-height: 680px; overflow: hidden; }
+  .tab-content { display: none; animation: fadeIn 0.25s ease; }
+  .tab-content.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── Nav Bar ── */
+  .nav-tabs {
+    display: flex;
+    background: var(--navy-dark);
+    border-top: 1.5px solid var(--gold);
+    padding: 10px 0 14px;
+    position: sticky;
+    bottom: 0;
+  }
+  .nav-tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: rgba(255,255,255,0.4);
+    font-size: 10px;
+    font-family: 'Tajawal', sans-serif;
+    transition: color 0.2s;
+  }
+  .nav-tab i { font-size: 22px; }
+  .nav-tab.active { color: var(--gold-light); }
+  .nav-tab.active i { filter: drop-shadow(0 0 4px rgba(201,168,76,0.5)); }
+
+  /* ── Status Bar ── */
+  .status-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 18px 6px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    background: var(--navy-dark);
+  }
+
+  /* ── Header ── */
+  .header {
+    background: linear-gradient(160deg, var(--navy-dark) 0%, var(--navy) 100%);
+    padding: 0 18px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.07);
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -20px;
+    width: 110px; height: 110px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.05);
+  }
+
+  /* Logo */
+  .logo-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .logo-box {
+    width: 40px; height: 40px;
+    background: var(--navy-light);
+    border-radius: 11px;
+    border: 1.5px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .logo-leaf { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); font-size: 16px; }
+  .logo-coin {
+    width: 22px; height: 22px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    border: 1.5px solid var(--gold-light);
+    color: var(--navy-dark);
+  }
+  .logo-text span:first-child { display: block; color: var(--gold-light); font-size: 20px; font-weight: 500; letter-spacing: 0.5px; }
+  .logo-text span:last-child  { display: block; color: rgba(255,255,255,0.45); font-size: 10px; }
+
+  .header-actions { display: flex; align-items: center; gap: 8px; }
+  .icon-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.12);
+    border: 1px solid rgba(201,168,76,0.25);
+    color: var(--gold-light);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .icon-btn i { font-size: 18px; }
+
+  .greeting { color: rgba(255,255,255,0.6); font-size: 12px; }
+  .greeting-name { color: white; font-size: 16px; font-weight: 500; margin-bottom: 14px; }
+
+  /* Balance Card */
+  .balance-card {
+    background: rgba(201,168,76,0.10);
+    border-radius: 16px;
+    padding: 14px 16px;
+    border: 1px solid rgba(201,168,76,0.30);
+    position: relative;
+    z-index: 1;
+  }
+  .bal-label { color: rgba(255,255,255,0.6); font-size: 11px; margin-bottom: 4px; }
+  .bal-amount { color: var(--gold-light); font-size: 26px; font-weight: 700; }
+  .bal-unit { font-size: 13px; color: rgba(255,255,255,0.5); font-weight: 400; }
+  .bal-sub { color: rgba(255,255,255,0.5); font-size: 11px; margin-top: 4px; }
+  .bal-sub .up { color: #7ddfb0; }
+
+  /* Content */
+  .content { padding: 14px; }
+
+  .section-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--navy);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .section-title::before {
+    content: '';
+    display: block;
+    width: 3px; height: 14px;
+    background: linear-gradient(to bottom, var(--gold), var(--navy-light));
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  /* Children Scroll */
+  .children-scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    margin-bottom: 14px;
+    scrollbar-width: none;
+  }
+  .children-scroll::-webkit-scrollbar { display: none; }
+
+  .child-card {
+    min-width: 130px;
+    background: var(--white);
+    border-radius: 16px;
+    padding: 14px 12px;
+    border: 1px solid var(--border);
+    text-align: center;
+    flex-shrink: 0;
+    box-shadow: 0 2px 10px rgba(26,42,108,0.08);
+    transition: transform 0.2s;
+  }
+  .child-card:active { transform: scale(0.97); }
+
+  .child-avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600;
+    margin: 0 auto 8px;
+    border: 2px solid var(--gold);
+  }
+  .child-name  { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 3px; }
+  .child-amount { font-size: 11px; color: var(--gold-dark); font-weight: 500; }
+  .child-plan  { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
+
+  .progress-bar { height: 5px; background: #eef0f8; border-radius: 3px; margin-top: 8px; }
+  .progress-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--navy-light), var(--gold)); }
+
+  .milestone {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: var(--gold-pale);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 20px;
+    padding: 3px 9px;
+    font-size: 10px;
+    color: var(--gold-dark);
+    margin-top: 6px;
+  }
+
+  .add-child-card {
+    min-width: 88px;
+    background: var(--gold-pale);
+    border-radius: 16px;
+    padding: 14px 8px;
+    border: 1.5px dashed var(--gold);
+    text-align: center;
+    flex-shrink: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+    cursor: pointer;
+  }
+  .add-child-card i { font-size: 26px; color: var(--gold-dark); }
+  .add-child-card span { font-size: 11px; color: var(--navy); font-weight: 500; }
+
+  /* Quick Actions */
+  .quick-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }
+  .action-btn {
+    background: var(--white);
+    border-radius: 13px;
+    padding: 11px 4px;
+    border: 1px solid var(--border);
+    display: flex; flex-direction: column; align-items: center; gap: 5px;
+    box-shadow: 0 1px 4px rgba(26,42,108,0.05);
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  .action-btn:active { transform: scale(0.95); }
+  .action-icon { width: 36px; height: 36px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .action-btn span { font-size: 10px; color: var(--navy); text-align: center; }
+
+  /* Transactions */
+  .tx-list { display: flex; flex-direction: column; gap: 8px; }
+  .tx-item {
+    background: var(--white);
+    border-radius: 13px;
+    padding: 11px 14px;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; gap: 11px;
+  }
+  .tx-icon { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .tx-info { flex: 1; }
+  .tx-info p { font-size: 12px; font-weight: 500; color: var(--navy); }
+  .tx-info span { font-size: 10px; color: var(--text-muted); }
+  .tx-amount { font-size: 12px; font-weight: 600; white-space: nowrap; }
+
+  /* ── Packages ── */
+  .pkg-header {
+    background: linear-gradient(135deg, var(--navy-dark), var(--navy));
+    padding: 20px 18px;
+    text-align: center;
+  }
+  .pkg-header .emoji { font-size: 28px; margin-bottom: 6px; }
+  .pkg-header h2 { color: var(--gold-light); font-size: 17px; font-weight: 500; }
+  .pkg-header p { color: rgba(255,255,255,0.5); font-size: 11px; margin-top: 3px; }
+
+  .pkg-grid { display: flex; flex-direction: column; gap: 12px; }
+  .pkg-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 8px rgba(26,42,108,0.06);
+  }
+  .pkg-card.featured {
+    border: 2px solid var(--gold);
+    background: linear-gradient(135deg, #fffdf5, var(--white));
+  }
+  .pkg-badge {
+    display: inline-block;
+    background: var(--gold-pale);
+    color: var(--gold-dark);
+    font-size: 11px;
+    padding: 3px 12px;
+    border-radius: 7px;
+    margin-bottom: 7px;
+    font-weight: 500;
+    border: 1px solid rgba(201,168,76,0.3);
+  }
+  .pkg-name { font-size: 16px; font-weight: 500; color: var(--navy); }
+  .pkg-price { font-size: 20px; font-weight: 700; color: var(--navy-dark); margin: 5px 0; }
+  .pkg-price span { font-size: 12px; color: var(--text-muted); font-weight: 400; }
+  .pkg-features { list-style: none; margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+  .pkg-features li { font-size: 12px; color: #555; display: flex; align-items: center; gap: 6px; }
+  .pkg-features li i { color: var(--gold-dark); font-size: 14px; flex-shrink: 0; }
+  .pkg-btn {
+    width: 100%; margin-top: 12px; padding: 10px;
+    border-radius: 11px;
+    border: 1.5px solid var(--navy);
+    background: transparent;
+    color: var(--navy);
+    font-size: 13px; font-weight: 500;
+    font-family: 'Tajawal', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .pkg-btn.filled { background: var(--navy); color: var(--gold-light); border: none; }
+  .pkg-btn:active { opacity: 0.8; }
+
+  /* ── Reports ── */
+  .report-header {
+    background: linear-gradient(135deg, var(--navy-dark), var(--navy));
+    padding: 16px 18px;
+  }
+  .report-header h2 { color: var(--gold-light); font-size: 16px; font-weight: 500; margin-bottom: 2px; }
+  .report-header p { color: rgba(255,255,255,0.5); font-size: 11px; }
+
+  .stats-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 9px; margin-bottom: 14px; }
+  .stat-card { background: var(--white); border-radius: 13px; padding: 12px; border: 1px solid var(--border); }
+  .stat-label { font-size: 10px; color: var(--text-muted); margin-bottom: 3px; }
+  .stat-val { font-size: 17px; font-weight: 700; color: var(--navy); }
+  .stat-sub { font-size: 10px; color: var(--gold-dark); margin-top: 2px; }
+
+  .chart-card { background: var(--white); border-radius: 14px; padding: 14px; border: 1px solid var(--border); margin-bottom: 14px; }
+  .chart-title { font-size: 12px; font-weight: 500; color: var(--navy); margin-bottom: 12px; }
+  .bar-chart { display: flex; align-items: flex-end; gap: 6px; height: 80px; }
+  .bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .bar { width: 100%; border-radius: 5px 5px 0 0; transition: height 0.4s ease; }
+  .bar-label { font-size: 9px; color: var(--text-muted); }
+
+  .goals-card { background: var(--white); border-radius: 14px; padding: 14px; border: 1px solid var(--border); }
+  .goals-card p.title { font-size: 13px; font-weight: 500; color: var(--navy); margin-bottom: 12px; }
+  .goal-row { margin-bottom: 10px; }
+  .goal-row:last-child { margin-bottom: 0; }
+  .goal-info { display: flex; justify-content: space-between; margin-bottom: 5px; }
+  .goal-info span:first-child { font-size: 11px; color: #666; }
+  .goal-info span:last-child  { font-size: 11px; font-weight: 600; }
+  .goal-bar { height: 7px; border-radius: 4px; }
+  .goal-fill { height: 100%; border-radius: 4px; }
+
+  /* ── Profile ── */
+  .profile-top {
+    background: linear-gradient(135deg, var(--navy-dark), var(--navy));
+    padding: 24px 18px 20px;
+    text-align: center;
+  }
+  .profile-avatar {
+    width: 68px; height: 68px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; font-weight: 700;
+    color: var(--navy-dark);
+    margin: 0 auto 10px;
+    border: 3px solid rgba(255,255,255,0.25);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  }
+  .profile-name { color: white; font-size: 18px; font-weight: 500; }
+  .profile-plan { color: var(--gold-light); font-size: 12px; margin-top: 4px; }
+
+  .profile-stats { display: flex; gap: 8px; margin-top: 16px; }
+  .pstat {
+    flex: 1;
+    background: rgba(255,255,255,0.07);
+    border-radius: 11px; padding: 9px;
+    text-align: center;
+    border: 1px solid rgba(201,168,76,0.2);
+  }
+  .pstat p:first-child { font-size: 20px; font-weight: 700; color: var(--gold-light); }
+  .pstat p:last-child  { font-size: 10px; color: rgba(255,255,255,0.5); margin-top: 1px; }
+
+  .menu-list { display: flex; flex-direction: column; gap: 7px; padding: 14px; }
+  .menu-item {
+    background: var(--white);
+    border-radius: 13px;
+    padding: 13px 15px;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; gap: 11px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .menu-item:active { background: #f0f2fa; }
+  .menu-icon {
+    width: 34px; height: 34px;
+    border-radius: 9px;
+    background: var(--navy-muted);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .menu-icon i { font-size: 18px; color: var(--navy); }
+  .menu-item .menu-text { flex: 1; font-size: 13px; color: var(--navy); font-weight: 400; }
+  .menu-item .arr { color: #ccc; font-size: 14px; }
+
+  /* ── Splash / Login ── */
+  #splash-tab {
+    display: none;
+    background: linear-gradient(160deg, var(--navy-dark) 0%, #0d2060 60%, #162050 100%);
+    min-height: 680px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    text-align: center;
+  }
+  #splash-tab.active { display: flex; }
+  .splash-logo {
+    width: 90px; height: 90px;
+    background: var(--navy-light);
+    border-radius: 24px;
+    border: 2px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4), 0 0 0 8px rgba(201,168,76,0.07);
+  }
+  .splash-leaf { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 30px; }
+  .splash-coin {
+    width: 48px; height: 48px;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    border: 2px solid rgba(255,255,255,0.4);
+    color: var(--navy-dark);
+  }
+  .splash-title { color: var(--gold-light); font-size: 34px; font-weight: 500; letter-spacing: 1px; margin-bottom: 4px; }
+  .splash-sub1  { color: rgba(255,255,255,0.5); font-size: 12px; letter-spacing: 1px; margin-bottom: 6px; }
+  .splash-sub2  { color: rgba(255,255,255,0.35); font-size: 14px; }
+
+  .login-card {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border-radius: 20px;
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 22px 18px;
+    margin-top: 28px;
+  }
+  .login-card h3 { color: white; font-size: 16px; font-weight: 500; margin-bottom: 16px; }
+  .field {
+    width: 100%;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 11px;
+    padding: 12px 14px;
+    color: white;
+    font-size: 14px;
+    font-family: 'Tajawal', sans-serif;
+    margin-bottom: 10px;
+    outline: none;
+    text-align: right;
+  }
+  .field::placeholder { color: rgba(255,255,255,0.35); }
+  .field:focus { border-color: var(--gold); }
+  .login-btn {
+    width: 100%;
+    padding: 13px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    color: var(--navy-dark);
+    border: none;
+    border-radius: 11px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Tajawal', sans-serif;
+    cursor: pointer;
+    margin-top: 4px;
+    transition: opacity 0.2s;
+  }
+  .login-btn:active { opacity: 0.85; }
+  .login-footer { color: rgba(255,255,255,0.35); font-size: 11px; margin-top: 14px; }
+.app-logo-img{width:100%;max-width:220px;height:auto;display:block;margin:0 auto 18px;object-fit:contain}.header-logo-img{width:42px;height:42px;object-fit:contain;border-radius:10px}.splash-logo{display:none!important}
+
+
+  /* ── Functional Modal ── */
+  .app-modal {
+    position: fixed; inset: 0; z-index: 9999;
+    background: rgba(5,10,35,0.65);
+    display: none; align-items: center; justify-content: center;
+    padding: 18px;
+  }
+  .app-modal.active { display: flex; }
+  .modal-card {
+    width: 100%; max-width: 360px;
+    background: #fff; border-radius: 22px;
+    padding: 18px; direction: rtl;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    border: 1px solid rgba(201,168,76,0.3);
+  }
+  .modal-title { color: var(--navy); font-size: 17px; font-weight: 700; margin-bottom: 12px; }
+  .modal-text { color: #666; font-size: 12px; margin-bottom: 12px; line-height: 1.7; }
+  .modal-field, .modal-select {
+    width: 100%; padding: 12px; margin-bottom: 9px;
+    border: 1px solid var(--border); border-radius: 12px;
+    font-family: 'Tajawal', sans-serif; color: var(--navy); outline: none;
+    background: #f8f9ff; text-align: right;
+  }
+  .modal-actions { display: flex; gap: 8px; margin-top: 6px; }
+  .modal-actions button {
+    flex: 1; padding: 11px; border-radius: 12px;
+    border: none; font-family: 'Tajawal', sans-serif; font-weight: 700; cursor: pointer;
+  }
+  .modal-primary { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: var(--navy-dark); }
+  .modal-secondary { background: #eef0f8; color: var(--navy); }
+  .toast {
+    position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%);
+    background: var(--navy-dark); color: var(--gold-light); padding: 11px 16px;
+    border-radius: 999px; font-size: 12px; z-index: 10000; display: none;
+    border: 1px solid rgba(201,168,76,0.35);
+  }
+  .toast.active { display: block; }
+
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="screen" id="main-screen">
+
+    <!-- ══ SPLASH / LOGIN ══ -->
+    <div id="splash-tab" class="tab-content active">
+      <img src="logo.png" alt="Qasati Logo" class="app-logo-img">
+      <p class="splash-title">Qasati</p>
+      <p class="splash-sub1">Savings · Care · Future</p>
+      <p class="splash-sub2">أمان مُطلق . رعاية محبة</p>
+
+      <div class="login-card">
+        <h3>تسجيل الدخول</h3>
+        <input class="field" type="tel" placeholder="رقم الهاتف">
+        <input class="field" type="password" placeholder="كلمة المرور">
+        <button class="login-btn" onclick="goHome()">دخول</button>
+        <p class="login-footer">ليس لديك حساب؟ <span style="color:var(--gold-light);cursor:pointer">سجّل الآن</span></p>
+      </div>
+    </div>
+
+    <!-- ══ HOME ══ -->
+    <div id="home-tab" class="tab-content">
+      <div class="status-bar">
+        <span>9:41</span>
+        <span style="display:flex;gap:4px;align-items:center"><i class="ti ti-wifi" style="font-size:13px"></i><i class="ti ti-battery-2" style="font-size:13px"></i></span>
+      </div>
+      <div class="header">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
+          <div class="logo-row">
+            <img src="logo.png" alt="Qasati" class="header-logo-img">
+            <div class="logo-text">
+              <span>Qasati</span>
+              <span>أمان · رعاية · محبة</span>
+            </div>
+          </div>
+          <div class="header-actions">
+            <div class="icon-btn"><i class="ti ti-bell"></i></div>
+          </div>
+        </div>
+        <p class="greeting">أهلاً بك،</p>
+        <p class="greeting-name">أحمد الكناني 👋</p>
+        <div class="balance-card">
+          <p class="bal-label">إجمالي مدخرات أطفالي</p>
+          <p class="bal-amount">4,230,000 <span class="bal-unit">IQD</span></p>
+          <p class="bal-sub"><span class="up">↑ 196,000 IQD</span> زيادة هذا الشهر</p>
+        </div>
+      </div>
+
+      <div class="content">
+        <p class="section-title">أطفالي</p>
+        <div class="children-scroll">
+          <div class="child-card">
+            <div class="child-avatar" style="background:#eef0f8;color:var(--navy)">علي</div>
+            <p class="child-name">علي</p>
+            <p class="child-amount">2,352,000 IQD</p>
+            <p class="child-plan">🎓 هدف: تعليم</p>
+            <div class="progress-bar"><div class="progress-fill" style="width:72%"></div></div>
+            <div class="milestone">🎯 72% مكتمل</div>
+          </div>
+          <div class="child-card">
+            <div class="child-avatar" style="background:var(--gold-pale);color:var(--gold-dark)">فاطمة</div>
+            <p class="child-name">فاطمة</p>
+            <p class="child-amount">1,881,600 IQD</p>
+            <p class="child-plan">💍 هدف: زواج</p>
+            <div class="progress-bar"><div class="progress-fill" style="width:48%;background:linear-gradient(90deg,var(--gold),var(--gold-dark))"></div></div>
+            <div class="milestone">⭐ 48% مكتمل</div>
+          </div>
+          <div class="add-child-card">
+            <i class="ti ti-plus"></i>
+            <span>إضافة طفل</span>
+          </div>
+        </div>
+
+        <p class="section-title">إجراءات سريعة</p>
+        <div class="quick-actions">
+          <div class="action-btn">
+            <div class="action-icon" style="background:#eef2ff"><i class="ti ti-arrow-up" style="color:var(--navy)"></i></div>
+            <span>إيداع</span>
+          </div>
+          <div class="action-btn">
+            <div class="action-icon" style="background:var(--gold-pale)"><i class="ti ti-chart-bar" style="color:var(--gold-dark)"></i></div>
+            <span>تقرير</span>
+          </div>
+          <div class="action-btn">
+            <div class="action-icon" style="background:#eef0f8"><i class="ti ti-calculator" style="color:var(--navy-light)"></i></div>
+            <span>حاسبة</span>
+          </div>
+          <div class="action-btn">
+            <div class="action-icon" style="background:#f0faf5"><i class="ti ti-headset" style="color:var(--green)"></i></div>
+            <span>دعم</span>
+          </div>
+        </div>
+
+        <p class="section-title">آخر المعاملات</p>
+        <div class="tx-list">
+          <div class="tx-item">
+            <div class="tx-icon" style="background:#eef2ff"><i class="ti ti-arrow-up" style="color:var(--navy)"></i></div>
+            <div class="tx-info"><p>دفعة شهرية — علي</p><span>1 مايو 2026</span></div>
+            <span class="tx-amount" style="color:var(--green)">+65,250 IQD</span>
+          </div>
+          <div class="tx-item">
+            <div class="tx-icon" style="background:var(--gold-pale)"><i class="ti ti-arrow-up" style="color:var(--gold-dark)"></i></div>
+            <div class="tx-info"><p>دفعة شهرية — فاطمة</p><span>1 مايو 2026</span></div>
+            <span class="tx-amount" style="color:var(--green)">+65,250 IQD</span>
+          </div>
+          <div class="tx-item">
+            <div class="tx-icon" style="background:#f8f0e3"><i class="ti ti-receipt" style="color:var(--gold-dark)"></i></div>
+            <div class="tx-info"><p>رسوم الاشتراك</p><span>1 مايو 2026</span></div>
+            <span class="tx-amount" style="color:var(--red)">−5,230 IQD</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PACKAGES ══ -->
+    <div id="packages-tab" class="tab-content">
+      <div class="pkg-header">
+        <div class="emoji">🌱</div>
+        <h2>اختر الباقة المناسبة لك</h2>
+        <p>لكل طفل حساب خاص وخطة ادخار</p>
+      </div>
+      <div class="content" style="padding-top:16px">
+        <div class="pkg-grid">
+
+          <div class="pkg-card">
+            <div class="pkg-badge">🟢 الأساسية</div>
+            <p class="pkg-name">الباقة الأساسية</p>
+            <p class="pkg-price">32,700 IQD <span>/ شهر</span></p>
+            <ul class="pkg-features">
+              <li><i class="ti ti-check"></i> ادخار شهري منتظم</li>
+              <li><i class="ti ti-check"></i> حساب خاص لكل طفل</li>
+              <li><i class="ti ti-check"></i> متابعة الرصيد</li>
+            </ul>
+            <button class="pkg-btn">اختر هذه الباقة</button>
+          </div>
+
+          <div class="pkg-card featured">
+            <div class="pkg-badge">⭐ الأكثر طلباً</div>
+            <p class="pkg-name">الباقة المتقدمة</p>
+            <p class="pkg-price">65,250 IQD <span>/ شهر</span></p>
+            <ul class="pkg-features">
+              <li><i class="ti ti-check"></i> كل مميزات الأساسية</li>
+              <li><i class="ti ti-check"></i> تقارير شهرية تفصيلية</li>
+              <li><i class="ti ti-check"></i> إشعارات واتساب</li>
+              <li><i class="ti ti-check"></i> متابعة أهداف الطفل</li>
+            </ul>
+            <button class="pkg-btn filled">اختر هذه الباقة</button>
+          </div>
+
+          <div class="pkg-card">
+            <div class="pkg-badge">🥇 الذهبية</div>
+            <p class="pkg-name">الباقة الذهبية</p>
+            <p class="pkg-price">130,500 IQD <span>/ شهر</span></p>
+            <ul class="pkg-features">
+              <li><i class="ti ti-check"></i> كل مميزات المتقدمة</li>
+              <li><i class="ti ti-check"></i> استشارة مالية شخصية</li>
+              <li><i class="ti ti-check"></i> أولوية الخدمة</li>
+              <li><i class="ti ti-check"></i> إدارة استثمار ذكي</li>
+            </ul>
+            <button class="pkg-btn">اختر هذه الباقة</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ REPORTS ══ -->
+    <div id="reports-tab" class="tab-content">
+      <div class="report-header">
+        <h2>التقارير والمتابعة</h2>
+        <p>مايو 2026</p>
+      </div>
+      <div class="content">
+        <div class="stats-row">
+          <div class="stat-card">
+            <p class="stat-label">إجمالي المدخرات</p>
+            <p class="stat-val" style="font-size:15px">4,230,000</p>
+            <p class="stat-sub">IQD ↑ 4.9%</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-label">دفعات هذا الشهر</p>
+            <p class="stat-val" style="font-size:15px">130,500</p>
+            <p class="stat-sub">IQD · 2 أطفال</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-label">هدف علي — تعليم</p>
+            <p class="stat-val">72%</p>
+            <p class="stat-sub">2.35M / 3.26M IQD</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-label">هدف فاطمة — زواج</p>
+            <p class="stat-val">48%</p>
+            <p class="stat-sub">1.88M / 3.92M IQD</p>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <p class="chart-title">نمو المدخرات — آخر 6 أشهر (مليون IQD)</p>
+          <div class="bar-chart">
+            <div class="bar-wrap"><div class="bar" style="height:33px;background:#c5cde8"></div><span class="bar-label">ديس</span></div>
+            <div class="bar-wrap"><div class="bar" style="height:42px;background:#a8b2d8"></div><span class="bar-label">يناير</span></div>
+            <div class="bar-wrap"><div class="bar" style="height:50px;background:#8a97c8"></div><span class="bar-label">فبر</span></div>
+            <div class="bar-wrap"><div class="bar" style="height:57px;background:#6a7cb8"></div><span class="bar-label">مار</span></div>
+            <div class="bar-wrap"><div class="bar" style="height:64px;background:#4a5ca8"></div><span class="bar-label">أبر</span></div>
+            <div class="bar-wrap"><div class="bar" style="height:80px;background:var(--navy)"></div><span class="bar-label">مايو</span></div>
+          </div>
+        </div>
+
+        <div class="goals-card">
+          <p class="title">تقدم الأهداف</p>
+          <div class="goal-row">
+            <div class="goal-info">
+              <span>علي — تعليم جامعي</span>
+              <span style="color:var(--navy)">72%</span>
+            </div>
+            <div class="goal-bar" style="background:#eef0f8">
+              <div class="goal-fill" style="width:72%;background:linear-gradient(90deg,var(--navy-light),var(--gold))"></div>
+            </div>
+          </div>
+          <div class="goal-row">
+            <div class="goal-info">
+              <span>فاطمة — زواج</span>
+              <span style="color:var(--gold-dark)">48%</span>
+            </div>
+            <div class="goal-bar" style="background:var(--gold-pale)">
+              <div class="goal-fill" style="width:48%;background:linear-gradient(90deg,var(--gold),var(--gold-dark))"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PROFILE ══ -->
+    <div id="profile-tab" class="tab-content">
+      <div class="profile-top">
+        <div class="profile-avatar">أح</div>
+        <p class="profile-name">أحمد الكناني</p>
+        <p class="profile-plan">🥇 الباقة المتقدمة · عميل منذ 2024</p>
+        <div class="profile-stats">
+          <div class="pstat"><p>2</p><p>أطفال</p></div>
+          <div class="pstat"><p>18</p><p>شهراً</p></div>
+          <div class="pstat"><p>4.2M</p><p>IQD</p></div>
+        </div>
+      </div>
+      <div class="menu-list">
+        <div class="menu-item">
+          <div class="menu-icon"><i class="ti ti-file-text"></i></div>
+          <span class="menu-text">عقدي الرسمي</span><i class="ti ti-chevron-right arr"></i>
+        </div>
+        <div class="menu-item">
+          <div class="menu-icon"><i class="ti ti-bell"></i></div>
+          <span class="menu-text">الإشعارات</span><i class="ti ti-chevron-right arr"></i>
+        </div>
+        <div class="menu-item">
+          <div class="menu-icon"><i class="ti ti-credit-card"></i></div>
+          <span class="menu-text">طرق الدفع</span><i class="ti ti-chevron-right arr"></i>
+        </div>
+        <div class="menu-item">
+          <div class="menu-icon"><i class="ti ti-shield-check"></i></div>
+          <span class="menu-text">الأمان والخصوصية</span><i class="ti ti-chevron-right arr"></i>
+        </div>
+        <div class="menu-item">
+          <div class="menu-icon"><i class="ti ti-headset"></i></div>
+          <span class="menu-text">تواصل معنا</span><i class="ti ti-chevron-right arr"></i>
+        </div>
+        <div class="menu-item" onclick="logout()">
+          <div class="menu-icon"><i class="ti ti-logout"></i></div>
+          <span class="menu-text">تسجيل الخروج</span><i class="ti ti-chevron-right arr"></i>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /screen -->
+
+  <!-- Nav Bar (hidden on splash) -->
+  <div class="nav-tabs" id="nav-bar" style="display:none">
+    <button class="nav-tab active" onclick="switchTab('home',this)"><i class="ti ti-home"></i>الرئيسية</button>
+    <button class="nav-tab" onclick="switchTab('packages',this)"><i class="ti ti-package"></i>الباقات</button>
+    <button class="nav-tab" onclick="switchTab('reports',this)"><i class="ti ti-chart-bar"></i>التقارير</button>
+    <button class="nav-tab" onclick="switchTab('profile',this)"><i class="ti ti-user"></i>حسابي</button>
+  </div>
+</div><!-- /phone -->
+
+
+<script>
+  const defaultChildren = [
+    { name: 'علي', amount: 2352000, goal: 'تعليم', target: 3260000, icon: '🎓' },
+    { name: 'فاطمة', amount: 1881600, goal: 'زواج', target: 3920000, icon: '💍' }
+  ];
+
+  let children = JSON.parse(localStorage.getItem('qasati_children') || 'null') || defaultChildren;
+  let selectedPackage = localStorage.getItem('qasati_package') || 'الباقة المتقدمة';
+
+  function saveChildren() { localStorage.setItem('qasati_children', JSON.stringify(children)); }
+  function formatIQD(n) { return Number(n || 0).toLocaleString('en-US') + ' IQD'; }
+  function showToast(msg) {
+    let t = document.getElementById('toast');
+    if (!t) { t = document.createElement('div'); t.id = 'toast'; t.className = 'toast'; document.body.appendChild(t); }
+    t.textContent = msg; t.classList.add('active');
+    setTimeout(() => t.classList.remove('active'), 2200);
+  }
+  function scrollTopNow(){ setTimeout(() => window.scrollTo({top:0, behavior:'smooth'}), 40); }
+
+  function switchTab(name, btn) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    const tab = document.getElementById(name + '-tab');
+    if (tab) tab.classList.add('active');
+    if (btn) btn.classList.add('active');
+    scrollTopNow();
+  }
+
+  function goHome() {
+    document.getElementById('nav-bar').style.display = 'flex';
+    renderChildren();
+    updateTotals();
+    switchTab('home', document.querySelector('.nav-tab'));
+  }
+
+  function logout() {
+    document.getElementById('nav-bar').style.display = 'none';
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.getElementById('splash-tab').classList.add('active');
+    scrollTopNow();
+  }
+
+  function goalIcon(goal) {
+    if (goal.includes('زواج')) return '💍';
+    if (goal.includes('مشروع')) return '🚀';
+    return '🎓';
+  }
+
+  function renderChildren() {
+    const wrap = document.querySelector('.children-scroll');
+    if (!wrap) return;
+    wrap.innerHTML = children.map((c, i) => {
+      const pct = Math.min(100, Math.round((Number(c.amount) / Number(c.target || 1)) * 100));
+      return `<div class="child-card" onclick="openDepositModal(${i})">
+        <div class="child-avatar" style="background:${i%2?'var(--gold-pale)':'#eef0f8'};color:${i%2?'var(--gold-dark)':'var(--navy)'}">${c.name.slice(0,2)}</div>
+        <p class="child-name">${c.name}</p>
+        <p class="child-amount">${formatIQD(c.amount)}</p>
+        <p class="child-plan">${goalIcon(c.goal)} هدف: ${c.goal}</p>
+        <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+        <div class="milestone">🎯 ${pct}% مكتمل</div>
+      </div>`;
+    }).join('') + `<div class="add-child-card" onclick="openAddChildModal()"><i class="ti ti-plus"></i><span>إضافة طفل</span></div>`;
+  }
+
+  function updateTotals() {
+    const total = children.reduce((s,c)=>s+Number(c.amount||0),0);
+    const bal = document.querySelector('.bal-amount');
+    if (bal) bal.innerHTML = `${total.toLocaleString('en-US')} <span class="bal-unit">IQD</span>`;
+    const childCount = document.querySelector('.pstat p:first-child');
+    if (childCount) childCount.textContent = children.length;
+  }
+
+  function modal(html) {
+    let m = document.getElementById('app-modal');
+    if (!m) { m = document.createElement('div'); m.id = 'app-modal'; m.className = 'app-modal'; document.body.appendChild(m); }
+    m.innerHTML = `<div class="modal-card">${html}</div>`;
+    m.classList.add('active');
+  }
+  function closeModal(){ const m=document.getElementById('app-modal'); if(m) m.classList.remove('active'); }
+
+  function openAddChildModal() {
+    modal(`<p class="modal-title">إضافة طفل جديد</p>
+      <input id="childName" class="modal-field" placeholder="اسم الطفل">
+      <select id="childGoal" class="modal-select"><option>تعليم جامعي</option><option>زواج</option><option>مشروع مستقبلي</option></select>
+      <input id="childAmount" class="modal-field" type="number" placeholder="الرصيد الحالي بالدينار العراقي">
+      <input id="childTarget" class="modal-field" type="number" placeholder="الهدف المطلوب بالدينار العراقي">
+      <div class="modal-actions"><button class="modal-secondary" onclick="closeModal()">إلغاء</button><button class="modal-primary" onclick="addChild()">حفظ</button></div>`);
+  }
+
+  function addChild() {
+    const name = document.getElementById('childName').value.trim();
+    const goal = document.getElementById('childGoal').value;
+    const amount = Number(document.getElementById('childAmount').value || 0);
+    const target = Number(document.getElementById('childTarget').value || 1000000);
+    if (!name) return showToast('اكتب اسم الطفل أولاً');
+    children.push({ name, goal, amount, target, icon: goalIcon(goal) });
+    saveChildren(); renderChildren(); updateTotals(); closeModal(); showToast('تمت إضافة الطفل بنجاح');
+  }
+
+  function openDepositModal(i) {
+    const c = children[i];
+    modal(`<p class="modal-title">إيداع للطفل ${c.name}</p>
+      <p class="modal-text">الرصيد الحالي: ${formatIQD(c.amount)}</p>
+      <input id="depositAmount" class="modal-field" type="number" placeholder="مبلغ الإيداع بالدينار العراقي">
+      <div class="modal-actions"><button class="modal-secondary" onclick="closeModal()">إلغاء</button><button class="modal-primary" onclick="deposit(${i})">إيداع</button></div>`);
+  }
+
+  function openDepositChooser() {
+    modal(`<p class="modal-title">اختر الطفل للإيداع</p>` + children.map((c,i)=>
+      `<button class="modal-field" style="cursor:pointer" onclick="openDepositModal(${i})">${c.name} — ${formatIQD(c.amount)}</button>`
+    ).join('') + `<div class="modal-actions"><button class="modal-secondary" onclick="closeModal()">إغلاق</button></div>`);
+  }
+
+  function deposit(i) {
+    const amount = Number(document.getElementById('depositAmount').value || 0);
+    if (amount <= 0) return showToast('اكتب مبلغ صحيح');
+    children[i].amount = Number(children[i].amount || 0) + amount;
+    saveChildren(); renderChildren(); updateTotals(); closeModal(); showToast('تم الإيداع بنجاح');
+  }
+
+  function choosePackage(name) {
+    selectedPackage = name;
+    localStorage.setItem('qasati_package', name);
+    showToast('تم اختيار ' + name);
+  }
+
+  function openCalculator() {
+    modal(`<p class="modal-title">حاسبة الادخار</p>
+      <input id="calcMonthly" class="modal-field" type="number" placeholder="المبلغ الشهري IQD">
+      <input id="calcMonths" class="modal-field" type="number" placeholder="عدد الأشهر">
+      <p id="calcResult" class="modal-text"></p>
+      <div class="modal-actions"><button class="modal-secondary" onclick="closeModal()">إغلاق</button><button class="modal-primary" onclick="calcSaving()">احسب</button></div>`);
+  }
+  function calcSaving(){
+    const m=Number(document.getElementById('calcMonthly').value||0), months=Number(document.getElementById('calcMonths').value||0);
+    document.getElementById('calcResult').textContent='النتيجة المتوقعة: ' + formatIQD(m*months);
+  }
+
+  function showSupport(){ modal(`<p class="modal-title">الدعم</p><p class="modal-text">مرحباً بك، يمكنك إضافة رقم واتساب أو بريد الدعم هنا لاحقاً. هذه النسخة تحفظ البيانات على الهاتف وتعمل كنسخة تجريبية قابلة للاستخدام.</p><div class="modal-actions"><button class="modal-primary" onclick="closeModal()">تم</button></div>`); }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderChildren(); updateTotals();
+    const actions = document.querySelectorAll('.quick-actions .action-btn');
+    if (actions[0]) actions[0].onclick = openDepositChooser;
+    if (actions[1]) actions[1].onclick = () => switchTab('reports', document.querySelectorAll('.nav-tab')[2]);
+    if (actions[2]) actions[2].onclick = openCalculator;
+    if (actions[3]) actions[3].onclick = showSupport;
+    const pkgs = document.querySelectorAll('.pkg-btn');
+    pkgs.forEach(btn => btn.onclick = () => choosePackage(btn.closest('.pkg-card').querySelector('.pkg-name').textContent));
+  });
+</script>
+
+</body>
+</html>
